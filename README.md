@@ -20,7 +20,7 @@
 
 | Platform | Link |
 |----------|------|
-| Windows (Installer) | Download(https://github.com/ash-kernel/SpiceGames/releases/download/stable/SpiceGames.Setup.1.0.0.exe) |
+| Windows (Installer) | [Download](https://github.com/ash-kernel/SpiceGames/releases/download/stable/SpiceGames.Setup.exe) |
 
 > Check [Releases](https://github.com/ash-kernel/spicegames/releases) for the latest version.
 
