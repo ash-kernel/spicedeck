@@ -2,82 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SpiceGames — Game Launcher</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpiceGames — Personal Game Launcher</title>
+  <meta name="description" content="A modern personal game launcher for Windows. Add any .exe, auto-fetch metadata, track playtime." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <a href="#" class="logo">
-  <svg class="logo-icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-    <!-- Outer angular shield -->
-    <path d="M512 140 
-             L820 300 
-             L760 740 
-             L512 900 
-             L264 740 
-             L204 300 Z"
-          fill="#0A84FF"/>
 
-    <!-- Inner lightning -->
-    <path d="M460 320 
-             L620 320 
-             L520 520 
-             L640 520 
-             L420 760 
-             L500 560 
-             L380 560 Z"
-          fill="white"/>
-  </svg>
+<div id="header-container"></div>
+<div id="hero-container"></div>
+<div id="stats-container"></div>
+<div id="features-container"></div>
+<div id="apis-container"></div>
+<div id="download-container"></div>
+<div id="legal-container"></div>
+<div id="footer-container"></div>
 
-  <span class="logo-name">SpiceGames</span>
-</a>
+<script src="tabs.js"></script>
+<script src="navigation.js"></script>
+<script src="load-sections.js"></script>
 
-    <nav>
-      <a href="#features" class="nav-link">Features</a>
-      <a href="#download" class="nav-link">Download</a>
-      <a href="#legal" class="nav-link">Legal</a>
-      <a href="https://github.com/ash-kernel/spicegames" target="_blank" class="nav-link">GitHub</a>
-    </nav>
-
-    <a href="#download" class="btn-dl">Download</a>
-  </div>
-</header>
-
-<section class="hero" id="home">
-  <h1>Your games.<br><em>One launcher.</em></h1>
-  <p class="hero-sub">Add any game from your PC, get metadata automatically, track playtime.</p>
-
-  <div class="hero-actions">
-    <a href="#download" class="btn-primary">Download Free</a>
-    <a href="https://github.com/ash-kernel/spicegames" target="_blank" class="btn-secondary">GitHub</a>
-  </div>
-
-  <img class="hero-img" src="https://raw.githubusercontent.com/ash-kernel/Zetonic/main/sup/demos/fullscreen.png">
-</section>
-
-<section class="features" id="features">
-  <h2 class="section-title">Everything you need</h2>
-</section>
-
-<section class="download" id="download">
-  <a href="https://github.com/ash-kernel/spicegames/releases/latest/download/SpiceGames.Setup.exe" class="btn-primary">
-    Download Windows
-  </a>
-</section>
-
-<section id="legal"></section>
-
-<footer>
-  <p>© 2026 SpiceGames</p>
-</footer>
-
-<script src="script.js"></script>
 </body>
 </html>
