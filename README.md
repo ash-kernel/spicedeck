@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/banner.png" alt="SpiceGames" />
+<img src="assets/banner.png" alt="SpiceGames" width="600" />
 
 # SpiceGames
 
@@ -22,6 +22,8 @@
 |----------|------|
 | Windows (Installer) | [Download](https://github.com/ash-kernel/SpiceGames/releases/download/stable/SpiceGames.Setup.exe) |
 
+_im not rich enough to afford mac as soon as i get one you'll see mac here_
+
 > Check [Releases](https://github.com/ash-kernel/spicegames/releases) for the latest version.
 
 ---
@@ -41,8 +43,8 @@
 
 ## Screenshots
 
-![Demo1](assets/demo1.png)
-![Demo2](assets/demo2.png)
+<img src="assets/demo1.png" alt="Demo1" width="500" />
+<img src="assets/demo2.png" alt="Demo2" width="500" />
 
 ---
 
