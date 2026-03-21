@@ -103,7 +103,7 @@ export default function SettingsPage() {
     const games = useStore(s => s.games)
 
     const [local, setLocal] = useState(settings || {})
-    const [version, setVersion] = useState('1.0.0')
+    const [version, setVersion] = "2.0.0";
     const [startupStatus, setStartupStatus] = useState({ enabled: false, supported: false })
     const [startupLoading, setStartupLoading] = useState(false)
 
