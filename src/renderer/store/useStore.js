@@ -105,7 +105,13 @@ export const useStore = create((set, get) => ({
   },
 
   updateGame: (id, patch) => {
-    set(s => ({ games: s.games.map(g => g.id === id ? { ...g, ...patch } : g) }))
+    set(s => {
+      const updatedGames = s.games.map(g => g.id === id ? { ...g, ...patch } : g)
+      return {
+        games: updatedGames,
+        selectedGame: s.selectedGame?.id === id ? { ...s.selectedGame, ...patch } : s.selectedGame,
+      }
+    })
     get().saveLibrary()
   },
 
@@ -157,8 +163,8 @@ export const useStore = create((set, get) => ({
   applyTheme: (theme) => {
     document.body.classList.remove('theme-red','theme-neon','theme-ember','theme-rose','theme-teal','theme-gold','theme-cyber')
     if (theme !== 'dark') document.body.classList.add(`theme-${theme}`)
-    const defaults = { dark:'#6366F1', red:'#EF4444', neon:'#00FF88', ember:'#F97316' }
-    const col = defaults[theme] || '#6366F1'
+    const defaults = { slate:'#0EA5E9', dark:'#6366F1', red:'#EF4444', neon:'#00FF88', ember:'#F97316' }
+    const col = defaults[theme] || '#0EA5E9'
     document.documentElement.style.setProperty('--accent', col)
     const rgb = col.replace('#','').match(/.{2}/g).map(h=>parseInt(h,16)).join(',')
     document.documentElement.style.setProperty('--accent-rgb', rgb)

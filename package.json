@@ -1,6 +1,6 @@
 {
   "name": "spicedeck",
-  "version": "5.5.0",
+  "version": "6.0.0",
   "description": "SpiceDeck — Personal Game Launcher",
   "main": "src/main/main.js",
   "author": "ash-kernel",
@@ -43,6 +43,12 @@
       "assets/**/*",
       "package.json"
     ],
+    "extraResources": [
+    {
+      "from": "assets/icons",
+      "to": "assets/icons"
+    }
+  ],
     "win": {
       "target": [
         {

@@ -23,7 +23,7 @@ const NAV = [
   { path: '/wishlist', label: 'Wishlist', icon: Wishlist },
   { path: '/deals', label: 'Deals', icon: Deals },
   { path: '/news', label: 'News', icon: News },
-  { path: '/controller', label: 'Controller', icon: Controller },
+  { path: '/controller', label: 'Inputs', icon: Controller },
   { path: '/screenshots', label: 'Screenshots', icon: Screenshots },
   { path: '/stats', label: 'Stats', icon: Stats },
   { path: '/systeminfo', label: 'System Info', icon: SystemInfo },

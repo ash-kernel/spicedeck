@@ -107,9 +107,9 @@ function AppLayout() {
     document.title = 'SpiceDeck'
     if (IS) {
       const saved = (() => { try { return JSON.parse(localStorage.getItem('sw_settings') || '{}') } catch { return {} } })()
-      document.body.classList.remove('theme-red','theme-neon','theme-ember','theme-rose','theme-teal','theme-gold','theme-cyber')
-      const t = saved.theme || 'dark'
-      if (t !== 'dark') document.body.classList.add(`theme-${t}`)
+      document.body.classList.remove('theme-red','theme-neon','theme-ember','theme-rose','theme-teal','theme-gold','theme-cyber','theme-slate')
+      const t = saved.theme || 'slate'
+      if (t !== 'slate') document.body.classList.add(`theme-${t}`)
       const accent = saved.accentColor || '#6366F1'
       document.documentElement.style.setProperty('--accent', accent)
       const rgb = accent.replace('#','').match(/.{2}/g).map(h => parseInt(h, 16)).join(',')

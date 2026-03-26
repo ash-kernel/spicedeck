@@ -1,8 +1,8 @@
 # 🎮 SpiceDeck
 
-**A modern, lightweight game launcher for Windows**
+**A game launcher that actually works**
 
-Organize, track, and launch your entire game library — all in one place. No accounts, no tracking, just games.
+Just feed it your games and launch them. Organize your library, track playtime, find deals, discover new stuff. No account required. No weird tracking. Just you and your games.
 
 <br/>
 
@@ -12,44 +12,44 @@ Organize, track, and launch your entire game library — all in one place. No ac
 
 <br/>
 
-[⬇ Download](https://github.com/ash-kernel/spicedeck/releases) • [✨ Features](#-features) • [📸 Screenshots](#-screenshots)
+[⬇ Download](https://github.com/ash-kernel/spicedeck/releases) • [Features](#-features) • [Screenshots](#-screenshots)
 
 ---
 
-## ✨ Features
+## ✨ What you can do
 
-| | |
+| Feature | What it does |
 |---|---|
-| **🎮 Library** | Add any .exe, one-click launch, Steam import |
-| **🧠 Smart Metadata** | Auto covers, ratings (Steam/Metacritic/OpenCritic), HowLongToBeat |
-| **📊 Tracking** | Playtime, sessions, goals, stats dashboard |
-| **📚 Collections** | Favorites, Playing, Backlog, Completed + custom |
-| **🔍 Discover** | Browse 50K+ games, trending, by genre |
-| **💰 Deals** | Steam, Epic, GOG, Humble — compare & alerts |
-| **📰 News** | PC Gamer, IGN, Eurogamer feeds |
-| **🎮 Extras** | Controller support, screenshots, widget mode, 8 themes |
+| **Library** | Add .exe files, launch 'em, import from Steam |
+| **Smart Covers** | Auto-magic game covers, ratings, completion times |
+| **Track Playtime** | See how many hours you've sunk into each game |
+| **Collections** | Favorites, Playing, Backlog — organize your way |
+| **Discover** | Browse tons of games by genre |
+| **Find Deals** | See deals from Steam, Epic, GOG, Humble |
+| **Game News** | News from PC Gamer, IGN, and others |
+| **Extras** | Input testers, screenshots, widget mode, 9 themes |
 
-**100% offline** • **No accounts** • **No tracking**
+Everything works offline. No accounts. No tracking.
 
 ---
 
 ## 📸 Screenshots
 
 <details>
-<summary>🏠 Library View</summary>
+<summary>🏠 Your Game Library</summary>
 
 ![Library](assets/demo1.png)
 
-*Grid view of your game collection with covers, ratings, and playtime*
+*All your games in one place with covers, ratings, and playtime*
 
 </details>
 
 <details>
-<summary>📊 Itch.io</summary>
+<summary>📊 Stats & Info</summary>
 
 ![Stats](assets/demo2.png)
 
-*Track your gaming hours, genre breakdown, and recent activity*
+*How many hours you've played and what you're into*
 
 </details>
 
@@ -57,29 +57,26 @@ Organize, track, and launch your entire game library — all in one place. No ac
 
 ## ⬇ Download
 
-🪟 [Windows Installer](https://github.com/ash-kernel/spicedeck/releases/download/stable/SpiceDeck.Setup.exe)
+[Windows Installer](https://github.com/ash-kernel/spicedeck/releases/download/stable/SpiceDeck.Setup.exe)
 
-> 📦 All versions: https://github.com/ash-kernel/spicedeck/releases
+All versions available here: https://github.com/ash-kernel/spicedeck/releases
 
 ---
 
 ## ⚠️ SmartScreen Warning
 
-Windows may warn (app is unsigned). Just click **More info → Run anyway** — it's safe!
+Windows might warn you the app is unsigned. Don't worry — just click **More info → Run anyway**. It's totally safe.
 
 ---
 
 ## 🔒 Privacy
 
-- No accounts
-- No tracking
-- No analytics
-- All data stays local
+No accounts. No tracking. No analytics. Your game library stays on your computer. That's it.
 
 ---
 
 <div align="center">
 
-Made with ❤️ by [ash-kernel](https://github.com/ash-kernel)
+Made by [ash-kernel](https://github.com/ash-kernel)
 
 </div>

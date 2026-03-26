@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useStore } from '../store/useStore'
 import toast from 'react-hot-toast'
 
@@ -25,7 +25,29 @@ export default function AddGameModal() {
     publisher:'', released:'', metacritic:'', reviewScore:'',
     tags:[], platforms:[], website:'', steamId:'', price:'',
   })
+  const [saving, setSaving] = useState(false)
   const setF = (k, v) => setForm(f => ({ ...f, [k]: v }))
+
+  // Auto-search as user types (with debounce)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (query.trim()) {
+        setSearching(true)
+        const search = async () => {
+          try {
+            const res = IS ? await window.spicegames.searchGame({ name: query }) : []
+            setResults(res || [])
+          } catch { setResults([]) }
+          setSearching(false)
+        }
+        search()
+      } else {
+        setResults([])
+        setSearching(false)
+      }
+    }, 500) // 500ms debounce
+    return () => clearTimeout(timer)
+  }, [query])
 
   const doSearch = async (q = query) => {
     if (!q.trim()) return
@@ -38,6 +60,7 @@ export default function AddGameModal() {
   }
 
   const handleSelect = async (result) => {
+    if (loadingDet) return // Prevent multiple clicks while loading
     setSelected(result)
     setLoadDet(true)
     try {
@@ -87,16 +110,23 @@ export default function AddGameModal() {
   }
 
   const handleSave = () => {
+    if (saving) return // Prevent double clicks
     if (!exePath) { toast.error('Please select the game executable first'); return }
     if (!form.name.trim()) { toast.error('Game name is required'); return }
+    setSaving(true)
     const genres = normalizeGenres(form.genres)
-    addGame({
-      ...form, exePath, genres,
-      tags: Array.isArray(form.tags) ? form.tags : form.tags.split(',').map(s=>s.trim()).filter(Boolean),
-      accentColor: accentFromGenres(genres),
-    })
-    toast.success(`${form.name} added to library!`)
-    setAddOpen(false)
+    try {
+      addGame({
+        ...form, exePath, genres,
+        tags: Array.isArray(form.tags) ? form.tags : form.tags.split(',').map(s=>s.trim()).filter(Boolean),
+        accentColor: accentFromGenres(genres),
+      })
+      toast.success(`${form.name} added to library!`)
+      setAddOpen(false)
+    } catch (e) {
+      toast.error('Failed to add game')
+      setSaving(false)
+    }
   }
 
   const stepNum = { search:1, detail:2, link:3 }[step] || 1
@@ -146,16 +176,11 @@ export default function AddGameModal() {
                 <input
                   value={query}
                   onChange={e => setQuery(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && doSearch()}
                   placeholder="Search by game name…"
                   autoFocus
                   style={{ flex:1, background:'none', border:'none', outline:'none', color:'var(--text)', fontSize:14, fontFamily:'var(--font-body)' }}
                 />
               </div>
-              <button onClick={() => doSearch()} disabled={searching}
-                style={{ padding:'10px 22px', borderRadius:10, border:'none', background:'var(--accent)', color:'#fff', fontSize:13, fontWeight:700, cursor:'pointer', fontFamily:'var(--font-display)', opacity:searching?.7:1 }}>
-                {searching ? '…' : 'Search'}
-              </button>
             </div>
 
             <div style={{ flex:1, overflowY:'auto', minHeight:0 }}>
@@ -168,10 +193,10 @@ export default function AddGameModal() {
               {!searching && results.length > 0 && (
                 <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
                   {results.map(r => (
-                    <div key={r.steamId || r.name} onClick={() => handleSelect(r)}
-                      style={{ display:'flex', gap:14, padding:12, borderRadius:10, border:'1px solid var(--border)', background:'var(--bg3)', cursor:'pointer', transition:'all .18s', alignItems:'center' }}
-                      onMouseEnter={e=>{e.currentTarget.style.borderColor='rgba(var(--accent-rgb),.4)';e.currentTarget.style.background='var(--bg4)'}}
-                      onMouseLeave={e=>{e.currentTarget.style.borderColor='var(--border)';e.currentTarget.style.background='var(--bg3)'}}>
+                    <div key={r.steamId || r.name} onClick={() => !loadingDet && handleSelect(r)}
+                      style={{ display:'flex', gap:14, padding:12, borderRadius:10, border:'1px solid var(--border)', background:'var(--bg3)', cursor:loadingDet?'not-allowed':'pointer', transition:'all .18s', alignItems:'center', opacity:loadingDet?.5:1 }}
+                      onMouseEnter={e=>{if(!loadingDet){e.currentTarget.style.borderColor='rgba(var(--accent-rgb),.4)';e.currentTarget.style.background='var(--bg4)'}}}
+                      onMouseLeave={e=>{if(!loadingDet){e.currentTarget.style.borderColor='var(--border)';e.currentTarget.style.background='var(--bg3)'}}}>
                       <div style={{ width:46, height:62, borderRadius:7, overflow:'hidden', flexShrink:0, background:'var(--bg4)' }}>
                         {r.cover
                           ? <img src={r.cover} alt="" style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'top' }} />
@@ -209,10 +234,12 @@ export default function AddGameModal() {
             <div style={{ marginTop:16, paddingTop:16, borderTop:'1px solid var(--border)', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
               <span style={{ fontSize:12, color:'var(--text3)' }}>Can't find it? Add manually</span>
               <button onClick={() => {
+                  if (loadingDet) return
                   setForm({ name:'', cover:'', description:'', genres:[], developer:'', publisher:'', released:'', metacritic:'', reviewScore:'', tags:[], platforms:[], website:'', steamId:'', price:'' })
                   setStep(STEP.DETAIL)
                 }}
-                style={{ padding:'8px 16px', borderRadius:8, border:'1px solid var(--border2)', background:'var(--bg3)', color:'var(--text2)', fontSize:13, cursor:'pointer', fontFamily:'var(--font-body)' }}>
+                disabled={loadingDet}
+                style={{ padding:'8px 16px', borderRadius:8, border:'1px solid var(--border2)', background:'var(--bg3)', color:'var(--text2)', fontSize:13, cursor:loadingDet?'not-allowed':'pointer', fontFamily:'var(--font-body)', opacity:loadingDet?.5:1, transition:'all .2s' }}>
                 Add manually →
               </button>
             </div>
@@ -385,9 +412,9 @@ export default function AddGameModal() {
 
               <div style={{ display:'flex', gap:10 }}>
                 <button onClick={() => setStep(STEP.DETAIL)} style={{ ...backBtn, flex:1 }}>← Back</button>
-                <button onClick={handleSave} disabled={!exePath}
-                  style={{ flex:2, padding:'12px', borderRadius:10, border:'none', background: exePath ? `linear-gradient(135deg,var(--accent),var(--accent2))` : 'var(--bg4)', color: exePath ? '#fff' : 'var(--text3)', fontSize:14, fontWeight:700, cursor:exePath?'pointer':'default', fontFamily:'var(--font-display)', boxShadow:exePath?'var(--shadow-glow)':'none', letterSpacing:'.3px', transition:'all .2s' }}>
-                  + Add to Library
+                <button onClick={handleSave} disabled={!exePath || saving}
+                  style={{ flex:2, padding:'12px', borderRadius:10, border:'none', background: (exePath && !saving) ? `linear-gradient(135deg,var(--accent),var(--accent2))` : 'var(--bg4)', color: (exePath && !saving) ? '#fff' : 'var(--text3)', fontSize:14, fontWeight:700, cursor:(exePath && !saving)?'pointer':'default', fontFamily:'var(--font-display)', boxShadow:(exePath && !saving)?'var(--shadow-glow)':'none', letterSpacing:'.3px', transition:'all .2s', opacity:saving?.6:1 }}>
+                  {saving ? '…' : '+ Add to Library'}
                 </button>
               </div>
             </div>

@@ -25,8 +25,8 @@ function getStore(k, def) { const s = readStore(); return k in s ? s[k] : def }
 function setStore(k, v) { const s = readStore(); s[k] = v; writeStore(s) }
 
 const DEFAULT_SETTINGS = {
-  theme:            'dark',
-  accentColor:      '#6366F1',
+  theme:            'slate',
+  accentColor:      '#0EA5E9',
   defaultView:      'grid',
   sortBy:           'name',
   minimizeOnLaunch: true,
@@ -113,68 +113,78 @@ app.whenReady().then(() => {
     mainWindow?.hide()
   }
 
-  // ── TRAY (FIXED PATH LOGIC) ─────────────────
+  // ── TRAY  ─────────────────
   setTimeout(() => {
-    try {
-      const isDev = !app.isPackaged
-      const iconFile = process.platform === 'win32' ? 'icon.ico' : 'icon.png'
+  try {
+    const isDev = !app.isPackaged
+    const iconFile = process.platform === 'win32' ? 'icon.ico' : 'icon.png'
+    const iconSubdir = process.platform === 'win32' ? 'win' : ''
 
-      const candidates = isDev
-        ? [path.join(__dirname, '../../assets/icons', iconFile)]
-        : [
-            path.join(process.resourcesPath, 'assets', 'icons', iconFile),
-            path.join(path.dirname(app.getPath('exe')), 'resources', 'assets', 'icons', iconFile),
-          ]
+    // ── RESOLVE ICON PATH (CLEAN & RELIABLE) ──
+    const iconPath = isDev
+      ? path.join(__dirname, '../../assets/icons', iconSubdir, iconFile)
+      : path.join(process.resourcesPath, 'assets', 'icons', iconSubdir, iconFile)
 
-      const iconPath = candidates.find(p => fs.existsSync(p))
+    console.log('[Tray] Mode:', isDev ? 'DEV' : 'PROD')
+    console.log('[Tray] Path:', iconPath)
+    console.log('[Tray] Exists:', fs.existsSync(iconPath))
 
-      console.log('[Tray]', iconPath || 'ICON NOT FOUND')
+    // ── LOAD ICON ──
+    let img = null
 
-      const img = iconPath
-        ? nativeImage.createFromPath(iconPath)
-        : nativeImage.createEmpty()
+    if (fs.existsSync(iconPath)) {
+      img = nativeImage.createFromPath(iconPath)
+    }
 
-      tray = new Tray(img)
-      tray.setToolTip('SpiceDeck')
+    // ⚠️ fallback if icon missing (prevents tray crash)
+    if (!img || img.isEmpty()) {
+      console.warn('[Tray] Icon missing or invalid → using fallback')
+      img = nativeImage.createEmpty()
+    }
 
-      const menu = Menu.buildFromTemplate([
-        {
-          label: 'Open SpiceDeck',
-          click: () => {
-            mainWindow?.show()
-            mainWindow?.focus()
-          }
-        },
-        { type: 'separator' },
-        {
-          label: 'Quit SpiceDeck',
-          click: () => {
-            app._isQuitting = true
-            app.quit()
-          }
-        }
-      ])
+    // ── CREATE TRAY ──
+    tray = new Tray(img)
+    tray.setToolTip('SpiceDeck')
 
-      tray.setContextMenu(menu)
-
-      tray.on('click', () => {
-        if (mainWindow?.isVisible() && mainWindow?.isFocused()) {
-          mainWindow.hide()
-        } else {
+    const menu = Menu.buildFromTemplate([
+      {
+        label: 'Open SpiceDeck',
+        click: () => {
           mainWindow?.show()
           mainWindow?.focus()
         }
-      })
+      },
+      { type: 'separator' },
+      {
+        label: 'Quit SpiceDeck',
+        click: () => {
+          app._isQuitting = true
+          app.quit()
+        }
+      }
+    ])
 
-      tray.on('double-click', () => {
+    tray.setContextMenu(menu)
+
+    // ── EVENTS ──
+    tray.on('click', () => {
+      if (mainWindow?.isVisible() && mainWindow?.isFocused()) {
+        mainWindow.hide()
+      } else {
         mainWindow?.show()
         mainWindow?.focus()
-      })
+      }
+    })
 
-    } catch (e) {
-      console.warn('[Tray Error]', e)
-    }
-  }, 300)
+    tray.on('double-click', () => {
+      mainWindow?.show()
+      mainWindow?.focus()
+    })
+
+  } catch (e) {
+    console.error('[Tray Error]', e)
+  }
+}, 300)
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()

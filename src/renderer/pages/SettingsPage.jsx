@@ -18,13 +18,13 @@ const THEMES = [
 ]
 
 const APIS = [
-  { name:'Steam Store',    color:'#1a9fff', badge:'NO KEY', desc:'Game search, prices, reviews, screenshots, descriptions and Metacritic scores.' },
-  { name:'SteamSpy',       color:'#c6d4df', badge:'NO KEY', desc:'Discover trending and top-rated games, genre browsing, owner estimates.' },
-  { name:'Steam CDN',      color:'#66c0f4', badge:'FREE',   desc:'Portrait covers, headers, hero images — 4-level fallback chain per game.' },
-  { name:'CheapShark',     color:'#10B981', badge:'NO KEY', desc:'Live deals across Steam, GOG, Epic Games, Humble Bundle and more.' },
-  { name:'itch.io',        color:'#FA6432', badge:'FREE',   desc:'Indie game browser with tag filtering, search and detail pages.' },
-  { name:'PC Gamer / RPS', color:'#e53e3e', badge:'FREE',   desc:'Game news RSS feeds from PC Gamer, Rock Paper Shotgun, Eurogamer, IGN.' },
-  { name:'HowLongToBeat',  color:'#f5c518', badge:'FREE',   desc:'Completion times — Main Story, Main+Extra, 100%. Shows on game panels.' },
+  { name:'Steam Store',    color:'#1a9fff', desc:'Game search, prices, reviews, screenshots, descriptions and Metacritic scores.' },
+  { name:'SteamSpy',       color:'#c6d4df', desc:'Discover trending and top-rated games, genre browsing, owner estimates.' },
+  { name:'Steam CDN',      color:'#66c0f4', desc:'Portrait covers, headers, hero images — 4-level fallback chain per game.' },
+  { name:'CheapShark',     color:'#10B981', desc:'Live deals across Steam, GOG, Epic Games, Humble Bundle and more.' },
+  { name:'itch.io',        color:'#FA6432', desc:'Indie game browser with tag filtering, search and detail pages.' },
+  { name:'PC Gamer / RPS', color:'#e53e3e', desc:'Game news RSS feeds from PC Gamer, Rock Paper Shotgun, Eurogamer, IGN.' },
+  { name:'HowLongToBeat',  color:'#f5c518', desc:'Completion times — Main Story, Main+Extra, 100%. Shows on game panels.' },
 ]
 
 function Toggle({ value, onChange, disabled }) {
@@ -145,7 +145,7 @@ export default function SettingsPage() {
     setUpdateChecking(false)
   }
 
-  const activeTheme = local.theme || 'dark'
+  const activeTheme = local.theme || 'slate'
   const currentTheme = THEMES.find(t => t.id === activeTheme) || THEMES[0]
 
   return (
@@ -238,8 +238,6 @@ export default function SettingsPage() {
                 <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:3 }}>
                   <div style={{ width:6, height:6, borderRadius:'50%', background:api.color, boxShadow:`0 0 4px ${api.color}`, flexShrink:0 }} />
                   <span style={{ fontSize:12, fontWeight:600, color:'var(--text)', flex:1 }}>{api.name}</span>
-                  <span style={{ fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:20, background:`${api.color}18`, color:api.color, border:`1px solid ${api.color}28` }}>{api.badge}</span>
-                  <span style={{ fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:20, background:'rgba(16,185,129,.1)', color:'var(--success)', border:'1px solid rgba(16,185,129,.2)' }}>FREE</span>
                 </div>
                 <div style={{ fontSize:11, color:'var(--text3)', paddingLeft:14, lineHeight:1.5 }}>{api.desc}</div>
               </div>
