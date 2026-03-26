@@ -85,42 +85,100 @@ function applyStartupSetting(enable) {
 
 app.whenReady().then(() => {
   const settings = { ...DEFAULT_SETTINGS, ...getStore('settings', {}) }
-  applyStartupSetting(settings.runOnStartup !== false)
-  const launchHidden = process.argv.includes('--hidden') || app.getLoginItemSettings().wasOpenedAsHidden
-  createWindow()
-  if (launchHidden && settings.minimizeToTray) mainWindow?.hide()
 
+  // ── STARTUP FIX ─────────────────────────────
+  if (app.isPackaged) {
+    try {
+      app.setLoginItemSettings({
+        openAtLogin: settings.runOnStartup !== false,
+        path: app.getPath('exe'),
+        args: ['--hidden']
+      })
+      console.log('[Startup]', app.getLoginItemSettings())
+    } catch (e) {
+      console.error('[Startup Error]', e)
+    }
+  } else {
+    console.log('[Startup] Skipped (dev mode)')
+  }
+
+  // ── HIDDEN LAUNCH ───────────────────────────
+  const launchHidden =
+    process.argv.includes('--hidden') ||
+    app.getLoginItemSettings().wasOpenedAsHidden
+
+  createWindow()
+
+  if (launchHidden && settings.minimizeToTray) {
+    mainWindow?.hide()
+  }
+
+  // ── TRAY (FIXED PATH LOGIC) ─────────────────
   setTimeout(() => {
     try {
-      const isDev    = process.env.NODE_ENV === 'development' || !app.isPackaged
+      const isDev = !app.isPackaged
       const iconFile = process.platform === 'win32' ? 'icon.ico' : 'icon.png'
+
       const candidates = isDev
         ? [path.join(__dirname, '../../assets/icons', iconFile)]
         : [
-            path.join(app.getAppPath(), 'assets', 'icons', iconFile),
             path.join(process.resourcesPath, 'assets', 'icons', iconFile),
             path.join(path.dirname(app.getPath('exe')), 'resources', 'assets', 'icons', iconFile),
           ]
+
       const iconPath = candidates.find(p => fs.existsSync(p))
-      console.log('[SpiceDeck] Tray: mode=' + (isDev?'dev':'pkg') + ', icon=' + (iconPath||'NOT FOUND'))
-      const img = iconPath ? nativeImage.createFromPath(iconPath) : nativeImage.createEmpty()
+
+      console.log('[Tray]', iconPath || 'ICON NOT FOUND')
+
+      const img = iconPath
+        ? nativeImage.createFromPath(iconPath)
+        : nativeImage.createEmpty()
+
       tray = new Tray(img)
       tray.setToolTip('SpiceDeck')
-      const menu = Menu.buildFromTemplate([
-        { label:'Open SpiceDeck', click: () => { mainWindow?.show(); mainWindow?.focus() } },
-        { type:'separator' },
-        { label:'Quit SpiceDeck', click: () => { app._isQuitting = true; app.quit() } },
-      ])
-      tray.setContextMenu(menu)
-      tray.on('click', () => {
-        if (mainWindow?.isVisible() && mainWindow?.isFocused()) mainWindow.hide()
-        else { mainWindow?.show(); mainWindow?.focus() }
-      })
-      tray.on('double-click', () => { mainWindow?.show(); mainWindow?.focus() })
-    } catch (e) { console.warn('[SpiceDeck] Tray failed:', e.message, e.stack) }
-  }, 500)
 
-  app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) createWindow() })
+      const menu = Menu.buildFromTemplate([
+        {
+          label: 'Open SpiceDeck',
+          click: () => {
+            mainWindow?.show()
+            mainWindow?.focus()
+          }
+        },
+        { type: 'separator' },
+        {
+          label: 'Quit SpiceDeck',
+          click: () => {
+            app._isQuitting = true
+            app.quit()
+          }
+        }
+      ])
+
+      tray.setContextMenu(menu)
+
+      tray.on('click', () => {
+        if (mainWindow?.isVisible() && mainWindow?.isFocused()) {
+          mainWindow.hide()
+        } else {
+          mainWindow?.show()
+          mainWindow?.focus()
+        }
+      })
+
+      tray.on('double-click', () => {
+        mainWindow?.show()
+        mainWindow?.focus()
+      })
+
+    } catch (e) {
+      console.warn('[Tray Error]', e)
+    }
+  }, 300)
+
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
 })
 
 app.on('window-all-closed', () => {

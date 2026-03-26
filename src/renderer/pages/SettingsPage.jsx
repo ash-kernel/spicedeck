@@ -14,6 +14,7 @@ const THEMES = [
   { id:'teal',  label:'Ocean',  accent:'#14B8A6', accent2:'#0EA5E9', desc:'Teal'    },
   { id:'gold',  label:'Gold',   accent:'#F59E0B', accent2:'#EAB308', desc:'Amber'   },
   { id:'cyber', label:'Cyber',  accent:'#A855F7', accent2:'#EC4899', desc:'Purple'  },
+  { id:'slate', label:'Slate',  accent:'#0EA5E9', accent2:'#06B6D4', desc:'Blue'    },
 ]
 
 const APIS = [

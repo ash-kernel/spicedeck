@@ -228,3 +228,26 @@ body.theme-cyber {
   --text3:         #5A4070;
   --shadow-glow:   0 0 40px rgba(168,85,247,0.28);
 }
+/* ══ SLATE ══════════════════════════════════════════════════════════════════ */
+body.theme-slate {
+  --accent:        #0EA5E9;
+  --accent-rgb:    14,165,233;
+  --accent2:       #06B6D4;
+  --accent-glow:   rgba(14,165,233,0.3);
+  --bg:            #07090B;
+  --bg2:           #0D1117;
+  --bg3:           #141B23;
+  --bg4:           #1A232D;
+  --bg5:           #232E39;
+  --glass:         rgba(13,17,23,0.75);
+  --glass-border:  rgba(14,165,233,0.08);
+  --border:        rgba(14,165,233,0.07);
+  --border2:       rgba(14,165,233,0.12);
+  --border3:       rgba(14,165,233,0.2);
+  --text:          #EEF2F5;
+  --text2:         #7A8A99;
+  --text3:         #4A5A69;
+  --shadow-card:   0 4px 24px rgba(0,0,0,0.5);
+  --shadow-hover:  0 12px 48px rgba(0,0,0,0.7), 0 0 0 1px rgba(14,165,233,0.2);
+  --shadow-glow:   0 0 40px rgba(14,165,233,0.25);
+}
